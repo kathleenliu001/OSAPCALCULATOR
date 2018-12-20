@@ -1,0 +1,146 @@
+package oops;//Post-Secondary Debt Calculator and Financial Assistant
+import java.io.*;
+public class Ammonization {
+	public static void main(String[]args) throws IOException{
+		welcome();
+		System.out.println();
+		String choice = featureDescription();
+		if(choice.equals("1"))
+			optionOne();
+		
+	}
+	public static void welcome() {
+		System.out.println("Welcome Graduate/User");
+		System.out.println("This calculator is designed for those who have OSAP debt they would like to pay off,");
+		System.out.println("as well as doubling as a cash flow budgeter");
+		System.out.println("Please read the regulations below carefully.");
+		System.out.println("=======================================================================================");
+		System.out.println();
+		System.out.println("OSAP DEBT PAYMENT POLICIES AND REGULATIONS");
+		System.out.println("-------------------------------------------");
+		System.out.println("1. Within the first six months of graduating, you will not be charged any interest on your" );
+		System.out.println("   debt payments");
+		System.out.println("2. After six months, you are required to start paying");
+		System.out.println("3. The maximum time period to pay back your debt is 9.5 years (since the time you graduated)");
+		System.out.println("4. The interest rate per annum will be a sum of Ontario's prime rate (3.95%), and an additional");
+		System.out.println("   1%, resulting in a total rate of 4.95% per annum" );
+		System.out.println();
+		System.out.println("Note: We bear no responsibility for the future actions of the user. This calculator is merely");
+		System.out.println("      a suggestive guideline for financial planning. Any course or consequence of action will be");
+		System.out.println("      the result of user discretion");
+	}  
+	public static String featureDescription() throws IOException{
+	//	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Our calculator contains three different functionalities");
+		System.out.println("----------------------------------------------------------------------------------------------------------------------");
+		System.out.println("1. YOU dictate the period you would like to pay off your debt in, and a set monthly rate of payment is ");
+		System.out.println("   calculated. ");
+		System.out.println();
+		System.out.println("2. YOU dictate the monthly rate of payment and the time period required to pay off your debt is calculated.");
+		System.out.println();
+		System.out.println("3. You enter the required information requested in order view your monthly cash flow to help yourself budget accordingly");
+		System.out.println();
+		System.out.println("4. Exit the program");
+		System.out.println();
+		System.out.println("Please select one of these options by entering the option's corresponding number");
+		return wordInput();
+	}	
+	
+	public static void optionOne() throws IOException{
+		
+				System.out.println("Please enter your debt amount");
+				double loanAmount = input();
+				System.out.println("How many months have passed since you left post-secondary?");
+				double passedMonths = input();
+				int remainingMonths = 6-(int)passedMonths;
+				if(remainingMonths>0) {
+					System.out.println("Is there an amount you'd like to pay off monthly for the remaining "+remainingMonths+" months");
+					System.out.println("before your debt starts compounding? Yes or No?");
+					if(wordInput().equalsIgnoreCase("yes")) {
+						System.out.println("Please enter a valid amount");
+						double payOut = input();
+						if((payOut*remainingMonths)<loanAmount) {
+							double remainingLoan = loanAmount - (payOut*remainingMonths);
+							System.out.println("The amount that will be compounded after these remaining months is $"+remainingLoan);
+							System.out.println("Please enter the number of months you'd like to pay off your remaining debt in the compounding period");
+							int cMonths = (int)input();
+							MonthlyAmount ma=new MonthlyAmount(remainingLoan,cMonths);
+							System.out.println(ma.toString());
+						}
+						else
+							System.out.println("Your debt will be paid off before any of it compounds");
+					}
+					else {
+						double remainingLoan = loanAmount;
+						System.out.println("Please enter the number of months you'd like to pay off your debt in within the compounding period");
+						int cMonths = (int)input();
+						MonthlyAmount ma=new MonthlyAmount(remainingLoan,cMonths);
+						System.out.println("The monthly amount you need to pay is " +ma.toString());
+					}
+					
+				}
+				else {
+					System.out.println("Please enter the number of months you'd like to pay off your remaining debt in the compounding period");
+					int cMonths = (int)input();
+					MonthlyAmount ma=new MonthlyAmount(loanAmount,cMonths);
+					System.out.println(ma.toString());
+				}
+				
+				
+		
+	}
+	public static double input() throws IOException{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		double number = Double.parseDouble(br.readLine());
+		return number;
+	}
+	public static String wordInput() throws IOException{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		return br.readLine();
+	}
+	
+}
+
+
+
+package oops;
+
+import java.text.DecimalFormat;
+
+public class MonthlyAmount {
+	private int numMonths;
+	private double loanAmount;
+	
+	public MonthlyAmount() {
+		super();
+		numMonths=1;
+		loanAmount=1.0;
+	}
+	 MonthlyAmount(double loanAmount, int numMonths ) {
+		super();
+		this.loanAmount = loanAmount;
+		this.numMonths = numMonths;
+	}
+	 public void setNumMonths(int numMonths) {
+		 this.numMonths= numMonths;
+	 }
+	 public int getNumMonths() {
+		 return numMonths;
+	 }
+	 public void setLoanAmount(double loanAmount) {
+		 this.loanAmount = loanAmount;
+	 }
+	 public double getLoanAmount() {
+		 return loanAmount;
+	 }
+	 public String findMonthlyPayment() {
+		 DecimalFormat numberFormat = new DecimalFormat("#.00");
+		 return numberFormat.format((loanAmount*(0.0495/12)*Math.pow(1+(0.0495/12), numMonths))/(Math.pow(1+(0.0495/12), numMonths)-1));
+	 }
+	 public String toString() {
+		 return "The amount you should pay monthly once your loan starts compounding is $" +findMonthlyPayment();
+	 }
+
+}
+
+
