@@ -1,0 +1,84 @@
+import java.io.*;
+public class CashFlowBudgeting {
+	private double monthIncome=0.0, accomodation=0.0, utility=0.0, grocery=0.0, transport=0.0, clothing=0.0, monthPayment=0.0; 
+	public CashFlowBudgeting () {
+		super();
+		monthIncome=6.0;
+		accomodation=1.0;
+		utility=1.0;
+		grocery=1.0;
+		transport=1.0;
+		clothing=1.0;
+		monthPayment=1.0;
+	}
+	public CashFlowBudgeting (double monthIncome, double accomodation, double utility, double grocery, double transport, double clothing, double monthPayment) {
+		super();
+		this.monthIncome=monthIncome;
+		this.accomodation=accomodation;
+		this.utility=utility;
+		this.grocery=grocery;
+		this.transport=transport;
+		this.clothing=clothing;
+		this.monthPayment=monthPayment;
+	}
+	public void setMonthIncome (double monthIncome) {
+		this.monthIncome=monthIncome;
+	}
+	public double getMonthIncome () {
+		return monthIncome;
+	}
+	public void setAccomodation (double accomodation) {
+		this.accomodation=accomodation;
+	}
+	public double getAccomodation () {
+		return accomodation;
+	}
+	public void setUtility (double utility) {
+		this.utility=utility;
+	}
+	public double getUtility () {
+		return utility;
+	}
+	public void setGrocery (double grocery) {
+		this.grocery=grocery;
+	}
+	public double getGrocery () {
+		return grocery;
+	}
+	public void setTransport (double transport) {
+		this.transport=transport;
+	}
+	public double getTransport () {
+		return transport;
+	}
+	public void setClothing (double clothing) {
+		this.clothing=clothing;
+	}
+	public double getClothing () {
+		return clothing;
+	}
+	public void setMonthPayment (double monthPayment) {
+		this.monthPayment=monthPayment;
+	}
+	public double getMonthPayment () { 
+		return monthPayment;
+	}
+	public double findNetCashFlow () {
+		return monthIncome-(accomodation+utility+grocery+transport+clothing+monthPayment);
+	}
+	public void changeValue () throws IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		while (true) {
+			System.out.println("Please change the value of the desired monthly payment. The net cash flow is negative.");
+			monthPayment=Double.parseDouble(br.readLine());
+			if (findNetCashFlow()>=0) {
+				break;
+			}
+		}
+	}
+	public String toString() {
+		if (findNetCashFlow()<0) 
+			return "The net cash flow is "+findNetCashFlow()+". The cash flow is negative.";
+		return "The net cash flow is "+findNetCashFlow()+". The cash flow is postive";
+	}
+}
